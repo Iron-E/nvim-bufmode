@@ -24,7 +24,7 @@ local _combos = {
 	['0'] = _exe('bfirst'),
 	['?'] = _exe('help bufmode-usage'),
 	['b'] = _exe('bprevious'),
-	['d'] = _exe('bdelete'),
+	['d'] = _exe('silent! bdelete'),
 	['w'] = _exe('bnext'),
 }
 
