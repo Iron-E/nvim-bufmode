@@ -1,0 +1,63 @@
+*bufmode.txt*          Plugin for managing buffers
+*bufmode*
+
+Author: Iron-E – https://github.com/Iron-E & https://gitlab.com/Iron_E
+Web: https://github.com/Iron-E/bufmode
+
+|bufmode| is a Vim plugin for managing windows. Built-in functionality includes
+window selection, window buffer swapping, and window resizing. The plugin is
+extensible, allowing additional functionality to be added (see
+|bufmode-configuration| below).
+
+==============================================================================
+0. Table of Contents                                               *bufmode-toc*
+
+1. Requirements ............ |bufmode-requirements|
+2. Usage ................... |bufmode-usage|
+3. Configuration ........... |bufmode-configuration|
+
+==============================================================================
+1. Requirements                                           *bufmode-requirements*
+
+* |nvim-libmodal|
+	* https://github.com/Iron-E/nvim-libmodal
+
+==============================================================================
+2. Usage                                                         *bufmode-usage*
+
+                                                                 *:bufmodeEnter*
+                                                          *<Plug>(bufmodeEnter)*
+Enter |bufmode| with <leader><Tab> or |:bufmodeEnter|.
+
+Key                                       Use
+----------------------------------------  ------------------------------------------------------
+<Esc>                                     Leave `bufmode`
+`?`                                         Show help message
+`^`,`0`,<Home>,<Up>                           Go to the beginning of the tab list.
+<S-0>,<S-Home>,<S-Up>                     Move the current tab to the beginning of the tab list.
+`$`,<End>,<Down>                            Go to the end of the tab list.
+`%`,<S-End>,<S-Down>                        Move the current tab to the end of the tab list.
+`b`,`j`,`h`,<Left>,<PageUp>                     Tab left.
+`w`,`k`,`l`,<Right>,<PageDown>                  Tab right.
+<S-b>,<S-j>,<S-h>,<S-Left>,<S-PageUp>     Move current tab to the left.
+<S-w>,<S-k>,<S-l>,<S-Right>,<S-PageDown>  Move current tab to the right.
+`a`                                         Append a tab and switch to it.
+`A`                                         Append a tab to the end and switch to it.
+`i`                                         Prepend a tab and switch to it.
+`I`                                         Prepend a tab to the beginning and switch to it.
+`d`                                         Delete the current tab.
+`s`                                         Replace the current tab with a new tab.
+
+==============================================================================
+3. Configuration                                         *bufmode-configuration*
+
+By default, |bufmode| is started with <leader><Tab> or |:bufmodeEnter|. If
+any mapping for |<Plug>bufmodeEnter| is detected, this default will not
+load.
+
+>
+	map <leader><Tab> <Plug>bufmodeEnter
+<
+
+==============================================================================
+ vim:tw=78:ts=4:ft=help:norl:
