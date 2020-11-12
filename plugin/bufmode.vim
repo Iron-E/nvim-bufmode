@@ -7,5 +7,5 @@ nnoremap <silent> <unique> <Plug>(BufmodeEnter) <Cmd>lua require('bufmode')()<CR
 nmap <silent> <unique> <leader>b <Plug>(BufmodeEnter)
 
 if !exists(':BufmodeEnter')
-	command! bufmodeEnter lua require('bufmode')()
+	command! BufmodeEnter lua require('bufmode')()
 endif
