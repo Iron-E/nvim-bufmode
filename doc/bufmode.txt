@@ -27,9 +27,9 @@ extensible, allowing additional functionality to be added (see
 ==============================================================================
 2. Usage                                                         *bufmode-usage*
 
-                                                                 *:bufmodeEnter*
-                                                          *<Plug>(bufmodeEnter)*
-Enter |bufmode| with <leader><Tab> or |:bufmodeEnter|.
+                                                                 *:BufmodeEnter*
+                                                          *<Plug>(BufmodeEnter)*
+Enter |bufmode| with <leader><Tab> or |:BufmodeEnter|.
 
 Key                                       Use
 ----------------------------------------  -----------------------------------
@@ -42,18 +42,17 @@ Key                                       Use
 <S-b>,<S-j>,<S-h>,<S-Left>,<S-PageUp>     Move current buffer to the left.
 <S-w>,<S-k>,<S-l>,<S-Right>,<S-PageDown>  Move current buffer to the right.
 `d`                                         Delete the current buffer.
-`s`                                         Put a buffer in current window.
 `s`                                         Replace current buffer with new.
 
 ==============================================================================
 3. Configuration                                         *bufmode-configuration*
 
-By default, |bufmode| is started with <leader><Tab> or |:bufmodeEnter|. If
-any mapping for |<Plug>bufmodeEnter| is detected, this default will not
+By default, |bufmode| is started with <leader><Tab> or |:BufmodeEnter|. If
+any mapping for |<Plug>(BufmodeEnter)| is detected, this default will not
 load.
 
 >
-	map <leader><Tab> <Plug>bufmodeEnter
+	map <leader><Tab> <Plug>(BufmodeEnter)
 <
 
 ==============================================================================

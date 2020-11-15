@@ -26,7 +26,6 @@ local _combos = vim.fn.exists('BufferFirst') > 0 and {
 	['b'] = _exe('BufferPrevious'),
 	['B'] = _exe('BufferMovePrevious'),
 	['d'] = _exe('BufferDelete'),
-	['p'] = _exe('BufferPick'),
 	['s'] = _exe('BufferClose'),
 	['w'] = _exe('BufferNext'),
 	['W'] = _exe('BufferMoveNext'),
