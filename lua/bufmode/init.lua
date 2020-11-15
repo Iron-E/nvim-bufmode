@@ -22,7 +22,7 @@ end
 local _combos = vim.fn.exists('BufferFirst') > 0 and {
 	['$'] = _exe('BufferLast'),
 	['0'] = _exe('BufferFirst'),
-	['?'] = _exe('help bufmode-usage-barbar'),
+	['?'] = _exe('help bufmode-usage'),
 	['b'] = _exe('BufferPrevious'),
 	['B'] = _exe('BufferMovePrevious'),
 	['d'] = _exe('BufferDelete'),
