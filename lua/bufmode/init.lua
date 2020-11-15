@@ -4,6 +4,7 @@
 	 */
 --]]
 
+local vim  = vim
 local cmd  = vim.api.nvim_command
 local eval = vim.api.nvim_eval
 
@@ -19,14 +20,18 @@ local function _exe(command)
 end
 
 -- the key combos for this mode.
-local _combos = vim.fn.exists('BufferFirst') > 0 and {
+local _combos = vim.fn.exists(':BufferClose') > 0 and {
 	['$'] = _exe('BufferLast'),
-	['0'] = _exe('BufferFirst'),
+	['0'] = _exe('BufferGoto 1'),
 	['?'] = _exe('help bufmode-usage'),
 	['b'] = _exe('BufferPrevious'),
 	['B'] = _exe('BufferMovePrevious'),
 	['d'] = _exe('BufferDelete'),
-	['s'] = _exe('BufferClose'),
+	['f'] = function()
+		cmd('BufferGoto '..vim.fn.bufnr(vim.fn.input('Go to buffer: ', '', 'buffer')))
+	end,
+	['p'] = _exe('BufferPick'),
+	['r'] = _exe('BufferClose'),
 	['w'] = _exe('BufferNext'),
 	['W'] = _exe('BufferMoveNext'),
 } or {
@@ -69,6 +74,10 @@ _inherit('H', 'B')
 _inherit(_to_char('<S-Left>'), 'B')
 _inherit(_to_char('<S-PageUp>'), 'B')
 
+-- Synonyms for 'f'
+_inherit('g', 'f')
+_inherit('t', 'f')
+
 -- Synonyms for 'w'
 _inherit('k', 'w')
 _inherit('l', 'w')
@@ -80,6 +89,9 @@ _inherit('K', 'W')
 _inherit('L', 'W')
 _inherit(_to_char('<S-Right>'), 'W')
 _inherit(_to_char('<S-PageDown>'), 'W')
+
+print(vim.inspect(_combos))
+vim.fn.getchar()
 
 --[[
 	/*

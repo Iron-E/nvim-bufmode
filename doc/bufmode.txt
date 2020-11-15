@@ -42,7 +42,9 @@ Key                                       Use
 <S-b>,<S-j>,<S-h>,<S-Left>,<S-PageUp>     Move current buffer to the left.
 <S-w>,<S-k>,<S-l>,<S-Right>,<S-PageDown>  Move current buffer to the right.
 `d`                                         Delete the current buffer.
-`s`                                         Replace current buffer with new.
+`f`,`g`,`t`                                     Goto buffer by name.
+`p`                                         Pick buffer for current window.
+`r`                                         Replace current buffer with new.
 
 ==============================================================================
 3. Configuration                                         *bufmode-configuration*
