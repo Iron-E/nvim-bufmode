@@ -19,7 +19,17 @@ local function _exe(command)
 end
 
 -- the key combos for this mode.
-local _combos = {
+local _combos = vim.fn.exists('BufferFirst') > 0 and {
+	['$'] = _exe('BufferLast'),
+	['0'] = _exe('BufferFirst'),
+	['?'] = _exe('help bufmode-usage-barbar'),
+	['b'] = _exe('BufferPrevious'),
+	['B'] = _exe('BufferMovePrevious'),
+	['d'] = _exe('BufferDelete'),
+	['s'] = _exe('BufferClose'),
+	['w'] = _exe('BufferNext'),
+	['W'] = _exe('BufferMoveNext'),
+} or {
 	['$'] = _exe('blast'),
 	['0'] = _exe('bfirst'),
 	['?'] = _exe('help bufmode-usage'),
@@ -53,11 +63,23 @@ _inherit('h', 'b')
 _inherit(_to_char('<Left>'), 'b')
 _inherit(_to_char('<PageUp>'), 'b')
 
+-- Synonyms for 'B'
+_inherit('J', 'B')
+_inherit('H', 'B')
+_inherit(_to_char('<S-Left>'), 'B')
+_inherit(_to_char('<S-PageUp>'), 'B')
+
 -- Synonyms for 'w'
 _inherit('k', 'w')
 _inherit('l', 'w')
 _inherit(_to_char('<Right>'), 'w')
 _inherit(_to_char('<PageDown>'), 'w')
+
+-- Synonyms for 'W'
+_inherit('K', 'W')
+_inherit('L', 'W')
+_inherit(_to_char('<S-Right>'), 'W')
+_inherit(_to_char('<S-PageDown>'), 'W')
 
 --[[
 	/*

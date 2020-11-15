@@ -19,8 +19,10 @@ extensible, allowing additional functionality to be added (see
 ==============================================================================
 1. Requirements                                           *bufmode-requirements*
 
-* |nvim-libmodal|
-	* https://github.com/Iron-E/nvim-libmodal
+- |nvim-libmodal|
+	- https://github.com/Iron-E/nvim-libmodal
+- |barbar| (optional)
+	- https://github.com/romgrk/barbar.nvim
 
 ==============================================================================
 2. Usage                                                         *bufmode-usage*
@@ -30,23 +32,17 @@ extensible, allowing additional functionality to be added (see
 Enter |bufmode| with <leader><Tab> or |:bufmodeEnter|.
 
 Key                                       Use
-----------------------------------------  ------------------------------------------------------
+----------------------------------------  -----------------------------------
 <Esc>                                     Leave `bufmode`
 `?`                                         Show help message
-`^`,`0`,<Home>,<Up>                           Go to the beginning of the tab list.
-<S-0>,<S-Home>,<S-Up>                     Move the current tab to the beginning of the tab list.
-`$`,<End>,<Down>                            Go to the end of the tab list.
-`%`,<S-End>,<S-Down>                        Move the current tab to the end of the tab list.
-`b`,`j`,`h`,<Left>,<PageUp>                     Tab left.
-`w`,`k`,`l`,<Right>,<PageDown>                  Tab right.
-<S-b>,<S-j>,<S-h>,<S-Left>,<S-PageUp>     Move current tab to the left.
-<S-w>,<S-k>,<S-l>,<S-Right>,<S-PageDown>  Move current tab to the right.
-`a`                                         Append a tab and switch to it.
-`A`                                         Append a tab to the end and switch to it.
-`i`                                         Prepend a tab and switch to it.
-`I`                                         Prepend a tab to the beginning and switch to it.
-`d`                                         Delete the current tab.
-`s`                                         Replace the current tab with a new tab.
+`^`,`0`,<Home>,<Up>                           Go to beginning of buffer list.
+`$`,<End>,<Down>                            Go to end of buffer list.
+`b`,`j`,`h`,<Left>,<PageUp>                     Go to buffer left.
+`w`,`k`,`l`,<Right>,<PageDown>                  Go to buffer right.
+<S-b>,<S-j>,<S-h>,<S-Left>,<S-PageUp>     Move current buffer to the left.
+<S-w>,<S-k>,<S-l>,<S-Right>,<S-PageDown>  Move current buffer to the right.
+`d`                                         Delete the current buffer.
+`s`                                         Replace current buffer with new.
 
 ==============================================================================
 3. Configuration                                         *bufmode-configuration*
