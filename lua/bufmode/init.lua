@@ -90,9 +90,6 @@ _inherit('L', 'W')
 _inherit(_to_char('<S-Right>'), 'W')
 _inherit(_to_char('<S-PageDown>'), 'W')
 
-print(vim.inspect(_combos))
-vim.fn.getchar()
-
 --[[
 	/*
 	 * PUBLICIZE MODULE
