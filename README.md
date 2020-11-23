@@ -1,8 +1,6 @@
 # Description
 
-`nvim-bufmode` is a plugin that provides a new mode in Neo/vim for managing buffers.
-
-Although it is recommended that splits and buffers are used over buffers when possible, there _are_ scenarios when buffers are necessary. This plugin hopes to make that easier.
+`nvim-bufmode` is a plugin that provides a new mode in Neovim for managing buffers.
 
 # Requirements
 
@@ -15,38 +13,36 @@ Either use `packadd` or any package manager.
 ## Examples
 
 * [dein.vim](https://github.com/Shougo/dein.vim):
-	* Add `call dein#add('https://github.com/Iron-E/nvim-bufmode')` to `~/.vimrc`
+	* Add `call dein#add('https://github.com/Iron-E/nvim-bufmode')` to `~/.config/nvim/init.vim`
 	* `:call dein#install()`
 * [NeoBundle](https://github.com/Shougo/neobundle.vim):
-	* Add `NeoBundle 'https://github.com/Iron-E/nvim-bufmode'` to `~/.vimrc`
+	* Add `NeoBundle 'https://github.com/Iron-E/nvim-bufmode'` to `~/.config/nvim/init.vim`
 	* Re-open vim or execute `:source ~/.vimrc`
 * [vim-plug](https://github.com/junegunn/vim-plug):
-	* Add `Plug 'https://github.com/Iron-E/nvim-bufmode'` to `~/.vimrc`
+	* Add `Plug 'https://github.com/Iron-E/nvim-bufmode'` to `~/.config/nvim/init.vim`
 	* `:PlugInstall` or `$ vim +PlugInstall +qall`
 * [Vundle](https://github.com/gmarik/vundle):
-	* Add `Plugin 'https://github.com/Iron-E/nvim-bufmode'` to `~/.vimrc`
+	* Add `Plugin 'https://github.com/Iron-E/nvim-bufmode'` to `~/.config/nvim/init.vim`
 	* `:PluginInstall` or `$ vim +PluginInstall +qall`
 
 # Usage
 
-Enter `nvim-bufmode` with `<leader><Tab>` or `:bufmodeEnter`.
+Enter `nvim-bufmode` with `<leader><Tab>` or `:BufmodeEnter`.
 
-| Key         | Use                                                    |
-|:-----------:|:------------------------------------------------------:|
-| `<Esc>`     | Leave `bufmode`                                        |
-| `?`         | Show help message                                      |
-| `^`/`0`     | Go to the beginning of the tab list.                   |
-| `<S-0>`     | Move the current tab to the beginning of the tab list. |
-| `$`         | Go to the end of the tab list.                         |
-| `%`         | Move the current tab to the end of the tab list.       |
-| `b`/`j`/`h` | Tab left                                               |
-| `w`/`k`/`l` | Tab right                                              |
-| `a`         | Append a tab and switch to it.                         |
-| `A`         | Append a tab to the end and switch to it.              |
-| `i`         | Prepend a tab and switch to it.                        |
-| `I`         | Prepend a tab to the beginning and switch to it.       |
-| `d`         | Delete the current tab.                                |
-| `s`         | Replace the current tab with a new tab.                |
+| Key                                                | Use                               |
+|:--------------------------------------------------:|:---------------------------------:|
+| `<Esc>`                                            | Leave `bufmode`                   |
+| `?`                                                | Show help message                 |
+| `^`,`0`,`<Home>`,`<Up>`                            | Go to beginning of buffer list.   |
+| `$`,`<End>`,`<Down>`                               | Go to end of buffer list.         |
+| `b`,`j`,`h`,`<Left>`,`<PageUp>`                    | Go to buffer left.                |
+| `w`,`k`,`l`,`<Right>`,`<PageDown>`                 | Go to buffer right.               |
+| `<S-b>`,`<S-j>`,`<S-h>`,`<S-Left>`,`<S-PageUp>`    | Move current buffer to the left.  |
+| `<S-w>`,`<S-k>`,`<S-l>`,`<S-Right>`,`<S-PageDown>` | Move current buffer to the right. |
+| `d`                                                | Delete the current buffer.        |
+| `f`,`g`,`t`                                        | Goto buffer by name.              |
+| `p`                                                | Pick buffer for current window.   |
+| `r`                                                | Replace current buffer with new.  |
 
 See `:help bufmode-usage` for additional details.
 
