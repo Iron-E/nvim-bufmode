@@ -5,8 +5,9 @@
 --]]
 
 local vim  = vim
-local cmd  = vim.api.nvim_command
 local eval = vim.api.nvim_eval
+local exe  = vim.api.nvim_command
+local libmodal = require 'libmodal'
 
 --[[
 	/*
@@ -15,33 +16,36 @@ local eval = vim.api.nvim_eval
 --]]
 
 -- Wrap some vim command in a function.
-local function _exe(command)
-	return function() cmd(command) end
+local function _exe_wrap(command)
+	return function() exe(command) end
 end
 
 -- the key combos for this mode.
-local _combos = vim.fn.exists(':BufferClose') > 0 and {
-	['$'] = _exe('BufferLast'),
-	['0'] = _exe('BufferGoto 1'),
-	['?'] = _exe('help bufmode-usage'),
-	['b'] = _exe('BufferPrevious'),
-	['B'] = _exe('BufferMovePrevious'),
-	['d'] = _exe('BufferDelete'),
-	['f'] = function()
-		cmd('BufferGoto '..vim.fn.bufnr(vim.fn.input('Go to buffer: ', '', 'buffer')))
-	end,
-	['p'] = _exe('BufferPick'),
-	['r'] = _exe('BufferClose'),
-	['w'] = _exe('BufferNext'),
-	['W'] = _exe('BufferMoveNext'),
-} or {
-	['$'] = _exe('blast'),
-	['0'] = _exe('bfirst'),
-	['?'] = _exe('help bufmode-usage'),
-	['b'] = _exe('bprevious'),
-	['d'] = _exe('silent! bdelete'),
-	['w'] = _exe('bnext'),
+local _combos = {
+	['$'] = _exe_wrap 'blast',
+	['0'] = _exe_wrap 'bfirst',
+	['?'] = _exe_wrap 'help bufmode-usage',
+	['b'] = _exe_wrap 'bprevious',
+	['d'] = _exe_wrap 'silent! bdelete',
+	['w'] = _exe_wrap 'bnext',
 }
+
+if vim.fn.exists ':BufferClose' > 0 then _combos =
+	vim.tbl_extend('force', _combos, {
+		['$'] = _exe_wrap 'BufferLast',
+		['0'] = _exe_wrap 'BufferGoto 1',
+		['?'] = _exe_wrap 'help bufmode-usage',
+		['B'] = _exe_wrap 'BufferMovePrevious',
+		['d'] = _exe_wrap 'BufferDelete',
+		['f'] = function()
+			local buffer = vim.fn.input('Go to buffer: ', '', 'buffer')
+			exe('BufferGoto '..vim.fn.bufnr(buffer))
+		end,
+		['p'] = _exe_wrap 'BufferPick',
+		['r'] = _exe_wrap 'BufferClose',
+		['W'] = _exe_wrap 'BufferMoveNext',
+	})
+end
 
 -- create a `new` link for some `existing` mapping
 local function _inherit(child, parent)
@@ -55,24 +59,24 @@ end
 
 -- Synonyms for '0'
 _inherit('^', '0')
-_inherit(_to_char('<Home>') , '0')
-_inherit(_to_char('<Up>')   , '0')
+_inherit(_to_char '<Home>', '0')
+_inherit(_to_char '<Up>',   '0')
 
 -- Synonyms for '$'
-_inherit(_to_char('<End>'), '$')
-_inherit(_to_char('<Down>'), '$')
+_inherit(_to_char '<End>',  '$')
+_inherit(_to_char '<Down>', '$')
 
 -- Synonyms for 'b'
 _inherit('j', 'b')
 _inherit('h', 'b')
-_inherit(_to_char('<Left>'), 'b')
-_inherit(_to_char('<PageUp>'), 'b')
+_inherit(_to_char '<Left>',   'b')
+_inherit(_to_char '<PageUp>', 'b')
 
 -- Synonyms for 'B'
 _inherit('J', 'B')
 _inherit('H', 'B')
-_inherit(_to_char('<S-Left>'), 'B')
-_inherit(_to_char('<S-PageUp>'), 'B')
+_inherit(_to_char '<S-Left>',   'B')
+_inherit(_to_char '<S-PageUp>', 'B')
 
 -- Synonyms for 'f'
 _inherit('g', 'f')
@@ -81,14 +85,14 @@ _inherit('t', 'f')
 -- Synonyms for 'w'
 _inherit('k', 'w')
 _inherit('l', 'w')
-_inherit(_to_char('<Right>'), 'w')
-_inherit(_to_char('<PageDown>'), 'w')
+_inherit(_to_char '<Right>',    'w')
+_inherit(_to_char '<PageDown>', 'w')
 
 -- Synonyms for 'W'
 _inherit('K', 'W')
 _inherit('L', 'W')
-_inherit(_to_char('<S-Right>'), 'W')
-_inherit(_to_char('<S-PageDown>'), 'W')
+_inherit(_to_char '<S-Right>',    'W')
+_inherit(_to_char '<S-PageDown>', 'W')
 
 --[[
 	/*
@@ -96,6 +100,4 @@ _inherit(_to_char('<S-PageDown>'), 'W')
 	 */
 --]]
 
-return function()
-	require('libmodal').mode.enter('BUFFERS', _combos)
-end
+return function() libmodal.mode.enter('BUFFERS', _combos) end
