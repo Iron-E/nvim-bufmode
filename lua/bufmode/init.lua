@@ -32,7 +32,8 @@ local _combos = {
 
 if vim.fn.exists ':BufferClose' > 0 then _combos =
 	vim.tbl_extend('force', _combos, {
-		['?'] = _exe_wrap 'help bufmode-usage',
+		['$'] = _exe_wrap 'BufferLast',
+		['0'] = _exe_wrap 'BufferFirst',
 		['B'] = _exe_wrap 'BufferMovePrevious',
 		['d'] = _exe_wrap 'BufferDelete',
 		['f'] = function()
@@ -41,6 +42,7 @@ if vim.fn.exists ':BufferClose' > 0 then _combos =
 		end,
 		['p'] = _exe_wrap 'BufferPick',
 		['r'] = _exe_wrap 'BufferClose',
+		['w'] = _exe_wrap 'BufferNext',
 		['W'] = _exe_wrap 'BufferMoveNext',
 	})
 end
