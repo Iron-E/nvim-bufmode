@@ -21,7 +21,8 @@ local function _exe_wrap(command)
 end
 
 -- the key combos for this mode.
-local _combos = {
+local _combos =
+{
 	['$'] = _exe_wrap 'blast',
 	['0'] = _exe_wrap 'bfirst',
 	['?'] = _exe_wrap 'help bufmode-usage',
@@ -30,8 +31,10 @@ local _combos = {
 	['w'] = _exe_wrap 'bnext',
 }
 
+-- Add mappings for `barbar.nvim`
 if vim.fn.exists ':BufferClose' > 0 then _combos =
-	vim.tbl_extend('force', _combos, {
+	vim.tbl_extend('force', _combos,
+	{
 		['$'] = _exe_wrap 'BufferLast',
 		['0'] = _exe_wrap 'BufferFirst',
 		['B'] = _exe_wrap 'BufferMovePrevious',
@@ -48,14 +51,10 @@ if vim.fn.exists ':BufferClose' > 0 then _combos =
 end
 
 -- create a `new` link for some `existing` mapping
-local function _inherit(child, parent)
-	_combos[child] = _combos[parent]
-end
+local function _inherit(child, parent) _combos[child] = _combos[parent] end
 
 -- Turn some special character value into a character code.
-local function _to_char(val)
-	return eval('"\\'..val..'"')
-end
+local function _to_char(val) return eval '"\\'..val..'"' end
 
 -- Synonyms for '0'
 _inherit('^', '0')
