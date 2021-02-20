@@ -3,8 +3,8 @@ if exists('g:loaded_bufmode')
 endif
 let g:loaded_bufmode = 1
 
-nnoremap <silent> <unique> <Plug>(BufmodeEnter) <Cmd>lua require('bufmode')()<CR>
-nmap <silent> <unique> <leader>b <Plug>(BufmodeEnter)
+nnoremap <unique> <silent> <Plug>(BufmodeEnter) <Cmd>lua require('bufmode')()<CR>
+nmap <unique> <silent> <leader>b <Plug>(BufmodeEnter)
 
 if !exists(':BufmodeEnter')
 	command! BufmodeEnter lua require('bufmode')()
