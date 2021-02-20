@@ -49,13 +49,26 @@ Key                                       Use
 ==============================================================================
 3. Configuration                                         *bufmode-configuration*
 
+------------------------------------------------------------------------------
+DEFAULTS                                                      *bufmode-defaults*
+
 By default, |bufmode| is started with <leader><Tab> or |:BufmodeEnter|. If
 any mapping for |<Plug>(BufmodeEnter)| is detected, this default will not
-load.
-
->
+load. >
 	map <leader><Tab> <Plug>(BufmodeEnter)
 <
+
+------------------------------------------------------------------------------
+MAPPINGS                                                      *bufmode-mappings*
+                                                            *g:bufmode_mappings*
+
+One may |tbl_extend| the mappings from |:BufmodeEnter| by providing a global map
+of desired mappings: >
+	vim.g.bufmode_mappings = {}
+<
+
+	*Error	if |g:bufmode_mappings| has any mapping from |:BufmodeEnter|.
+	      	e.g. `vim.g.bufmode_mappings = {b = 'some_command'}`
 
 ==============================================================================
  vim:tw=78:ts=4:ft=help:norl:
