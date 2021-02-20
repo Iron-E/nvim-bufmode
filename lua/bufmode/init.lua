@@ -15,38 +15,33 @@ local libmodal = require 'libmodal'
 	 */
 --]]
 
--- Wrap some vim command in a function.
-local function _exe_wrap(command)
-	return function() exe(command) end
-end
-
 -- the key combos for this mode.
 local _combos =
 {
-	['$'] = _exe_wrap 'blast',
-	['0'] = _exe_wrap 'bfirst',
-	['?'] = _exe_wrap 'help bufmode-usage',
-	['b'] = _exe_wrap 'bprevious',
-	['d'] = _exe_wrap 'silent! bdelete',
-	['w'] = _exe_wrap 'bnext',
+	['$'] = 'blast',
+	['0'] = 'bfirst',
+	['?'] = 'help bufmode-usage',
+	['b'] = 'bprevious',
+	['d'] = 'silent! bdelete',
+	['w'] = 'bnext',
 }
 
 -- Add mappings for `barbar.nvim`
 if vim.fn.exists ':BufferClose' > 0 then _combos =
 	vim.tbl_extend('force', _combos,
 	{
-		['$'] = _exe_wrap 'BufferLast',
-		['0'] = _exe_wrap 'BufferFirst',
-		['B'] = _exe_wrap 'BufferMovePrevious',
-		['d'] = _exe_wrap 'BufferDelete',
+		['$'] = 'BufferLast',
+		['0'] = 'BufferFirst',
+		['B'] = 'BufferMovePrevious',
+		['d'] = 'BufferDelete',
 		['f'] = function()
 			local buffer = vim.fn.input('Go to buffer: ', '', 'buffer')
 			exe('BufferGoto '..vim.fn.bufnr(buffer))
 		end,
-		['p'] = _exe_wrap 'BufferPick',
-		['r'] = _exe_wrap 'BufferClose',
-		['w'] = _exe_wrap 'BufferNext',
-		['W'] = _exe_wrap 'BufferMoveNext',
+		['p'] = 'BufferPick',
+		['r'] = 'BufferClose',
+		['w'] = 'BufferNext',
+		['W'] = 'BufferMoveNext',
 	})
 end
 
@@ -54,7 +49,7 @@ end
 local function _inherit(child, parent) _combos[child] = _combos[parent] end
 
 -- Turn some special character value into a character code.
-local function _to_char(val) return eval '"\\'..val..'"' end
+local function _to_char(val) return eval('"\\'..val..'"') end
 
 -- Synonyms for '0'
 _inherit('^', '0')
