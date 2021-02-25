@@ -46,7 +46,7 @@ if vim.fn.exists ':BufferClose' > 0 then _combos =
 end
 
 -- add user mappings
-vim.tbl_extend('force', _combos, vim.g.bufmode_mappings or {})
+_combos = vim.tbl_extend('force', _combos, vim.g.bufmode_mappings or {})
 
 -- create a `new` link for some `existing` mapping
 local function _inherit(child, parent) _combos[child] = _combos[parent] end
