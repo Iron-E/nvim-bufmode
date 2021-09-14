@@ -1,19 +1,8 @@
---[[
-	/*
-	 * IMPORTS
-	 */
---]]
+--[[/* IMPORTS */]]
 
-local vim  = vim
-local eval = vim.api.nvim_eval
-local exe  = vim.api.nvim_command
 local libmodal = require 'libmodal'
 
---[[
-	/*
-	 * MODULE
-	 */
---]]
+--[[/* MODULE */]]
 
 -- the key combos for this mode.
 local _combos =
@@ -36,7 +25,7 @@ if vim.fn.exists ':BufferClose' > 0 then _combos =
 		['d'] = 'BufferDelete',
 		['f'] = function()
 			local buffer = vim.fn.input('Go to buffer: ', '', 'buffer')
-			exe('BufferGoto '..vim.fn.bufnr(buffer))
+			vim.api.nvim_command('BufferGoto '..vim.fn.bufnr(buffer))
 		end,
 		['p'] = 'BufferPick',
 		['r'] = 'BufferClose',
@@ -49,10 +38,14 @@ end
 _combos = vim.tbl_extend('force', _combos, vim.g.bufmode_mappings or {})
 
 -- create a `new` link for some `existing` mapping
-local function _inherit(child, parent) _combos[child] = _combos[parent] end
+local function _inherit(child, parent)
+	_combos[child] = _combos[parent]
+end
 
 -- Turn some special character value into a character code.
-local function _to_char(val) return eval('"\\'..val..'"') end
+local function _to_char(val)
+	return vim.api.nvim_replace_termcodes(val, true, true, true)
+end
 
 -- Synonyms for '0'
 _inherit('^', '0')
@@ -91,10 +84,6 @@ _inherit('L', 'W')
 _inherit(_to_char '<S-Right>',    'W')
 _inherit(_to_char '<S-PageDown>', 'W')
 
---[[
-	/*
-	 * PUBLICIZE MODULE
-	 */
---]]
+--[[/* PUBLICIZE MODULE */]]
 
 return function() libmodal.mode.enter('BUFFERS', _combos) end
