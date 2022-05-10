@@ -5,7 +5,7 @@ local libmodal = require 'libmodal'
 --[[/* MODULE */]]
 
 -- the key combos for this mode.
-local _combos =
+local keymaps =
 {
 	['$'] = 'blast',
 	['0'] = 'bfirst',
@@ -16,17 +16,13 @@ local _combos =
 }
 
 -- Add mappings for `barbar.nvim`
-if vim.fn.exists ':BufferClose' > 0 then _combos =
-	vim.tbl_extend('force', _combos,
+if vim.fn.exists ':BufferClose' > 0 then
+	keymaps = vim.tbl_extend('force', keymaps,
 	{
 		['$'] = 'BufferLast',
 		['0'] = 'BufferFirst',
 		['B'] = 'BufferMovePrevious',
 		['d'] = 'BufferDelete',
-		['f'] = function()
-			local buffer = vim.fn.input('Go to buffer: ', '', 'buffer')
-			vim.api.nvim_command('BufferGoto '..vim.fn.bufnr(buffer))
-		end,
 		['p'] = 'BufferPick',
 		['r'] = 'BufferClose',
 		['w'] = 'BufferNext',
@@ -35,55 +31,51 @@ if vim.fn.exists ':BufferClose' > 0 then _combos =
 end
 
 -- add user mappings
-_combos = vim.tbl_extend('force', _combos, vim.g.bufmode_mappings or {})
+keymaps = vim.tbl_extend('force', keymaps, vim.g.bufmode_mappings or {})
 
 -- create a `new` link for some `existing` mapping
-local function _inherit(child, parent)
-	_combos[child] = _combos[parent]
+local function inherit(child, parent)
+	keymaps[child] = keymaps[parent]
 end
 
 -- Turn some special character value into a character code.
-local function _to_char(val)
+local function tochar(val)
 	return vim.api.nvim_replace_termcodes(val, true, true, true)
 end
 
 -- Synonyms for '0'
-_inherit('^', '0')
-_inherit(_to_char '<Home>', '0')
-_inherit(_to_char '<Up>',   '0')
+inherit('^', '0')
+inherit(tochar '<Home>', '0')
+inherit(tochar '<Up>',   '0')
 
 -- Synonyms for '$'
-_inherit(_to_char '<End>',  '$')
-_inherit(_to_char '<Down>', '$')
+inherit(tochar '<End>',  '$')
+inherit(tochar '<Down>', '$')
 
 -- Synonyms for 'b'
-_inherit('j', 'b')
-_inherit('h', 'b')
-_inherit(_to_char '<Left>',   'b')
-_inherit(_to_char '<PageUp>', 'b')
+inherit('j', 'b')
+inherit('h', 'b')
+inherit(tochar '<Left>',   'b')
+inherit(tochar '<PageUp>', 'b')
 
 -- Synonyms for 'B'
-_inherit('J', 'B')
-_inherit('H', 'B')
-_inherit(_to_char '<S-Left>',   'B')
-_inherit(_to_char '<S-PageUp>', 'B')
-
--- Synonyms for 'f'
-_inherit('g', 'f')
-_inherit('t', 'f')
+inherit('J', 'B')
+inherit('H', 'B')
+inherit(tochar '<S-Left>',   'B')
+inherit(tochar '<S-PageUp>', 'B')
 
 -- Synonyms for 'w'
-_inherit('k', 'w')
-_inherit('l', 'w')
-_inherit(_to_char '<Right>',    'w')
-_inherit(_to_char '<PageDown>', 'w')
+inherit('k', 'w')
+inherit('l', 'w')
+inherit(tochar '<Right>',    'w')
+inherit(tochar '<PageDown>', 'w')
 
 -- Synonyms for 'W'
-_inherit('K', 'W')
-_inherit('L', 'W')
-_inherit(_to_char '<S-Right>',    'W')
-_inherit(_to_char '<S-PageDown>', 'W')
+inherit('K', 'W')
+inherit('L', 'W')
+inherit(tochar '<S-Right>',    'W')
+inherit(tochar '<S-PageDown>', 'W')
 
 --[[/* PUBLICIZE MODULE */]]
 
-return function() libmodal.mode.enter('BUFFERS', _combos) end
+return function() libmodal.mode.enter('BUFFERS', keymaps) end
