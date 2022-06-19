@@ -22,11 +22,12 @@ if vim.fn.exists ':BufferClose' > 0 then
 		['$'] = 'BufferLast',
 		['0'] = 'BufferFirst',
 		['B'] = 'BufferMovePrevious',
+		['b'] = 'BufferPrevious',
 		['d'] = 'BufferDelete',
 		['p'] = 'BufferPick',
 		['r'] = 'BufferClose',
-		['w'] = 'BufferNext',
 		['W'] = 'BufferMoveNext',
+		['w'] = 'BufferNext',
 	})
 end
 
