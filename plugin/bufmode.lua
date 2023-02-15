@@ -1,2 +1,1 @@
-local bufmode = require'bufmode'
-bufmode.setup()
+require 'bufmode'.setup()
