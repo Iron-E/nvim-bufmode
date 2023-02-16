@@ -1,123 +1,136 @@
+--- The keymaps for this mode
+local MODE_KEYMAPS =
+{
+	--- barbar.nvim integration
+	BARBAR =
+	{
+		['$'] = 'BufferLast',
+		['0'] = 'BufferFirst',
+		['B'] = 'BufferMovePrevious',
+		['b'] = 'BufferPrevious',
+		['d'] = 'BufferDelete',
+		['p'] = 'BufferPick',
+		['r'] = 'BufferClose',
+		['W'] = 'BufferMoveNext',
+		['w'] = 'BufferNext',
+	},
+
+	--- bufferline.nvim integration
+	BUFFERLINE =
+	{
+		['B'] = 'BufferLineMovePrev',
+		['b'] = 'BufferLineCyclePrev',
+		['p'] = 'BufferLinePick',
+		['W'] = 'BufferLineMoveNext',
+		['w'] = 'BufferLineCycleNext',
+	},
+
+	--- the default mode mappings
+	DEFAULT =
+	{
+		['$'] = 'blast',
+		['0'] = 'bfirst',
+		['?'] = 'help bufmode-usage',
+		['b'] = 'bprevious',
+		['d'] = 'silent! bdelete',
+		['w'] = 'bnext',
+	},
+}
+
+--- @type boolean|nil
+--- whether the previous `setup` call was done automatically by the `plugin` folder
+local prev_setup_auto
+
 --[[/* MODULE */]]
 
-local M = {}
-
--- the key combos for this mode.
-local default_keymaps =
+--- @class bufmode.options
+--- @field auto boolean whether the `setup` call was performed by the `plugin/bufmode.lua` file
+--- @field barbar boolean Whether to add bindings for barbar.nvim
+--- @field bufferline boolean Whether to add bindings for bufferline.nvim
+--- @field enter_mapping false|string custom binding to enter buffers mode
+--- @field keymaps? {[string]: fun()|string} custom key bindings to apply
+local DEFAULT_OPTS =
 {
-	['$'] = 'blast',
-	['0'] = 'bfirst',
-	['?'] = 'help bufmode-usage',
-	['b'] = 'bprevious',
-	['d'] = 'silent! bdelete',
-	['w'] = 'bnext',
+	auto = false,
+	barbar = false,
+	bufferline = false,
+	enter_mapping = '<Leader>b',
+	keymaps = nil,
 }
 
-local barbar_keymaps =
-{
-  ['$'] = 'BufferLast',
-  ['0'] = 'BufferFirst',
-  ['B'] = 'BufferMovePrevious',
-  ['b'] = 'BufferPrevious',
-  ['d'] = 'BufferDelete',
-  ['p'] = 'BufferPick',
-  ['r'] = 'BufferClose',
-  ['W'] = 'BufferMoveNext',
-  ['w'] = 'BufferNext',
-}
+--- @class bufmode
+local bufmode = {}
 
-local bufferline_keymaps =
-{
-  ['B'] = 'BufferLineMovePrev',
-  ['b'] = 'BufferLineCyclePrev',
-  ['p'] = 'BufferLinePick',
-  ['W'] = 'BufferLineMoveNext',
-  ['w'] = 'BufferLineCycleNext',
-}
+--- @param opts? bufmode.options
+function bufmode.setup(opts)
+	--- @type bufmode.options
+	opts = opts and vim.tbl_extend('keep', opts, DEFAULT_OPTS) or vim.deepcopy(DEFAULT_OPTS)
 
----@class BufmodeOptions
----@field barbar? boolean Whether to add bindings for barbar.nvim
----@field bufferline? boolean Whether to add bindings for bufferline.nvim
----@field keymaps? table custom key bindings to apply
----@field enter_mapping? string custom binding to enter buffers mode
+	-- if a setup was run manually once before, don't let plugin override the user's settings
+	if opts.auto and prev_setup_auto == false then
+		return
+	end
 
----@param opts? BufmodeOptions
-function M.setup(opts)
-  opts = opts or {}
-  local libmodal = require 'libmodal'
+	-- add user mappings
+	local keymaps = vim.deepcopy(MODE_KEYMAPS.DEFAULT)
 
-  -- add user mappings
-  local keymaps = vim.tbl_extend('force', default_keymaps, vim.g.bufmode_mappings or {})
+	if opts.barbar then -- Add mappings for `barbar.nvim`
+		keymaps = vim.tbl_extend('force', keymaps, MODE_KEYMAPS.BARBAR)
+	elseif opts.bufferline then -- Add mappings for `bufferline.nvim`
+		keymaps = vim.tbl_extend('force', keymaps, MODE_KEYMAPS.BUFFERLINE)
+	end
 
-  -- Add mappings for `barbar.nvim`
-  if opts.barbar then
-    keymaps = vim.tbl_extend('force', keymaps, barbar_keymaps)
-  -- Add mappings for `bufferline.nvim`
-  elseif opts.bufferline then
-    keymaps = vim.tbl_extend('force', keymaps, bufferline_keymaps)
-  end
+	--- create a link to some existing mapping
+	--- @param parent string
+	--- @param children string[]
+	local function inherit(parent, children)
+		for _, child in ipairs(children) do
+			keymaps[child] = keymaps[parent]
+		end
+	end
 
-  keymaps = vim.tbl_extend('force', keymaps, opts.keymaps or {})
+	--- Turn some special character value into a character code.
+	--- @param val string
+	--- @return string termcodes_replaced
+	local function tochar(val)
+		return vim.api.nvim_replace_termcodes(val, true, true, true)
+	end
 
-  -- create a `new` link for some `existing` mapping
-  local function inherit(child, parent)
-    keymaps[child] = keymaps[parent]
-  end
+	inherit('0', {'^', tochar '<Home>', tochar '<Up>'})
+	inherit('$', {tochar '<End>', tochar '<Down>'})
+	inherit('b', {'j', 'h', tochar '<Left>', tochar '<PageUp>'})
+	inherit('B', {'J', 'H', tochar '<S-Left>', tochar '<S-PageUp>'})
+	inherit('w', {'k', 'l', tochar '<Right>', tochar '<PageDown>'})
+	inherit('W', {'K', 'L', tochar '<S-Right>', tochar '<S-PageDown>'})
 
-  -- Turn some special character value into a character code.
-  local function tochar(val)
-    return vim.api.nvim_replace_termcodes(val, true, true, true)
-  end
+	if vim.g.bufmode_mappings then
+		keymaps = vim.tbl_extend('force', keymaps, vim.g.bufmode_mappings)
+	elseif opts.keymaps then
+		keymaps = vim.tbl_extend('force', keymaps, opts.keymaps)
+	end
 
-  -- Synonyms for '0'
-  inherit('^', '0')
-  inherit(tochar '<Home>', '0')
-  inherit(tochar '<Up>',   '0')
+	local libmodal = require 'libmodal'
+	local function mode()
+		libmodal.mode.enter('BUFFERS', keymaps)
+	end
 
-  -- Synonyms for '$'
-  inherit(tochar '<End>',  '$')
-  inherit(tochar '<Down>', '$')
+	--- The description used for mappings
+	local DESC = 'Enter buffer mode'
 
-  -- Synonyms for 'b'
-  inherit('j', 'b')
-  inherit('h', 'b')
-  inherit(tochar '<Left>',   'b')
-  inherit(tochar '<PageUp>', 'b')
+	if prev_setup_auto then
+		vim.keymap.del('n', DEFAULT_OPTS.enter_mapping)
+	end
 
-  -- Synonyms for 'B'
-  inherit('J', 'B')
-  inherit('H', 'B')
-  inherit(tochar '<S-Left>',   'B')
-  inherit(tochar '<S-PageUp>', 'B')
+	if opts.enter_mapping ~= false then
+		vim.keymap.set('n', opts.enter_mapping, mode, {desc = DESC})
+	end
 
-  -- Synonyms for 'w'
-  inherit('k', 'w')
-  inherit('l', 'w')
-  inherit(tochar '<Right>',    'w')
-  inherit(tochar '<PageDown>', 'w')
+	vim.keymap.set('n', '<Plug>(BufmodeEnter)', mode, {desc = DESC})
+	vim.api.nvim_create_user_command('BufmodeEnter', mode, {desc = DESC})
 
-  -- Synonyms for 'W'
-  inherit('K', 'W')
-  inherit('L', 'W')
-  inherit(tochar '<S-Right>',    'W')
-  inherit(tochar '<S-PageDown>', 'W')
-
-  local function bufmode()
-    libmodal.mode.enter('BUFFERS', keymaps)
-  end
-
-  if vim.fn.hasmapto '<Plug>(BufmodeEnter)' == '1' then
-    vim.keymap.del('n', '<Plug>(BufmodeEnter)')
-  end
-  vim.keymap.set('n', '<Plug>(BufmodeEnter)', bufmode, {silent = true, unique = true, desc = 'Enter buffers mode'})
-
-  if (opts.enter_mapping ~= false) then
-    vim.keymap.set('n', opts.enter_mapping or '<leader>b', bufmode, {remap = true, silent = true, unique = true, desc = 'Enter buffers mode'})
-  end
-
-  vim.api.nvim_create_user_command('BufmodeEnter', bufmode, {force = false, desc = "Enter buffers mode"})
+	prev_setup_auto = opts.auto
 end
 
 --[[/* PUBLICIZE MODULE */]]
 
-return M
+return bufmode

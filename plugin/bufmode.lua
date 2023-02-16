@@ -1,1 +1,1 @@
-require 'bufmode'.setup()
+require('bufmode').setup {auto = true}
