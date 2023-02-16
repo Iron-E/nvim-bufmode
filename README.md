@@ -12,6 +12,20 @@ Either use `packadd` or any package manager.
 
 ## Examples
 
+I recommend using [lazy.nvim](https://github.com/folke/lazy.nvim). Here is what you can put into your `lazy.setup({…})`:
+
+```lua
+{'Iron-E/nvim-bufmode',
+	cmd = 'BufmodeEnter',
+	config = true, -- automatically call `bufmode.setup()`; not needed if you specify `opts`
+	dependencies = 'Iron-E/nvim-libmodal',
+	keys = {{'<Leader>b', desc = 'Enter buffer mode', mode = 'n'}}, -- don't load
+	-- opts = {}, (put `setup` options here, e.g. `opts = {enter_mapping = false}`
+},
+```
+
+Other examples:
+
 * [dein.vim](https://github.com/Shougo/dein.vim):
 	* Add `call dein#add('https://github.com/Iron-E/nvim-bufmode')` to `~/.config/nvim/init.vim`
 	* `:call dein#install()`
@@ -25,7 +39,7 @@ Either use `packadd` or any package manager.
 	* Add `Plugin 'https://github.com/Iron-E/nvim-bufmode'` to `~/.config/nvim/init.vim`
 	* `:PluginInstall` or `$ vim +PluginInstall +qall`
 
-To customize the plugin, set `vim.g.bufmode_mappings` before loading it, or call 
+To customize the plugin, set `vim.g.bufmode_mappings` before loading it, or call
 `setup` after:
 
 ```vim
@@ -39,9 +53,9 @@ let g:bufmode_mappings = {
 }
 ```
 ```lua
-require'nvim-bufmode'.setup {
+require'bufmode'.setup {
   enter_mapping = '<leader>b', -- false to disable
-  bufferline = false, -- add bufferline keymaps
+  bufferline = false, -- add bufferline.nvim keymaps
   barbar = false, -- add barbar.nvim keymaps
   keymaps = { -- defaults:
     ['$'] = 'blast',
