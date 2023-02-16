@@ -16,28 +16,28 @@ I recommend using [lazy.nvim](https://github.com/folke/lazy.nvim). Here is what 
 
 ```lua
 {'Iron-E/nvim-bufmode',
-	cmd = 'BufmodeEnter',
-	config = true, -- automatically call `bufmode.setup()`; not needed if you specify `opts`
-	dependencies = 'Iron-E/nvim-libmodal',
-	keys = {{'<Leader>b', desc = 'Enter buffer mode', mode = 'n'}}, -- don't load
-	-- opts = {}, (put `setup` options here, e.g. `opts = {enter_mapping = false}`
+  cmd = 'BufmodeEnter',
+  config = true, -- automatically call `bufmode.setup()`; not needed if you specify `opts`
+  dependencies = 'Iron-E/nvim-libmodal',
+  keys = {{'<Leader>b', desc = 'Enter buffer mode', mode = 'n'}}, -- don't load
+  -- opts = {}, (put `setup` options here, e.g. `opts = {enter_mapping = false}`
 },
 ```
 
 Other examples:
 
 * [dein.vim](https://github.com/Shougo/dein.vim):
-	* Add `call dein#add('https://github.com/Iron-E/nvim-bufmode')` to `~/.config/nvim/init.vim`
-	* `:call dein#install()`
+  * Add `call dein#add('https://github.com/Iron-E/nvim-bufmode')` to `~/.config/nvim/init.vim`
+  * `:call dein#install()`
 * [NeoBundle](https://github.com/Shougo/neobundle.vim):
-	* Add `NeoBundle 'https://github.com/Iron-E/nvim-bufmode'` to `~/.config/nvim/init.vim`
-	* Re-open vim or execute `:source ~/.vimrc`
+  * Add `NeoBundle 'https://github.com/Iron-E/nvim-bufmode'` to `~/.config/nvim/init.vim`
+  * Re-open vim or execute `:source ~/.vimrc`
 * [vim-plug](https://github.com/junegunn/vim-plug):
-	* Add `Plug 'https://github.com/Iron-E/nvim-bufmode'` to `~/.config/nvim/init.vim`
-	* `:PlugInstall` or `$ vim +PlugInstall +qall`
+  * Add `Plug 'https://github.com/Iron-E/nvim-bufmode'` to `~/.config/nvim/init.vim`
+  * `:PlugInstall` or `$ vim +PlugInstall +qall`
 * [Vundle](https://github.com/gmarik/vundle):
-	* Add `Plugin 'https://github.com/Iron-E/nvim-bufmode'` to `~/.config/nvim/init.vim`
-	* `:PluginInstall` or `$ vim +PluginInstall +qall`
+  * Add `Plugin 'https://github.com/Iron-E/nvim-bufmode'` to `~/.config/nvim/init.vim`
+  * `:PluginInstall` or `$ vim +PluginInstall +qall`
 
 To customize the plugin, set `vim.g.bufmode_mappings` before loading it, or call
 `setup` after:
