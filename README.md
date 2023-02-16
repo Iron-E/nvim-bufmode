@@ -25,6 +25,35 @@ Either use `packadd` or any package manager.
 	* Add `Plugin 'https://github.com/Iron-E/nvim-bufmode'` to `~/.config/nvim/init.vim`
 	* `:PluginInstall` or `$ vim +PluginInstall +qall`
 
+To customize the plugin, set `vim.g.bufmode_mappings` before loading it, or call 
+`setup` after:
+
+```vim
+let g:bufmode_mappings = {
+  \ '$': 'blast',
+  \ '0': 'bfirst',
+  \ '?': 'help bufmode-usage',
+  \ 'b': 'bprevious',
+  \ 'd': 'silent! bdelete',
+  \ 'w': 'bnext',
+}
+```
+```lua
+require'nvim-bufmode'.setup {
+  enter_mapping = '<leader>b', -- false to disable
+  bufferline = false, -- add bufferline keymaps
+  barbar = false, -- add barbar.nvim keymaps
+  keymaps = { -- defaults:
+    ['$'] = 'blast',
+    ['0'] = 'bfirst',
+    ['?'] = 'help bufmode-usage',
+    ['b'] = 'bprevious',
+    ['d'] = 'silent! bdelete',
+    ['w'] = 'bnext',
+  }
+}
+```
+
 # Usage
 
 Enter `nvim-bufmode` with `<leader><Tab>` or `:BufmodeEnter`.
