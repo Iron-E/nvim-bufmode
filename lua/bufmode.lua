@@ -54,7 +54,7 @@ local DEFAULT_OPTS =
 	auto = false,
 	barbar = false,
 	bufferline = false,
-	enter_mapping = '<Leader>b',
+	enter_mapping = '<leader>b',
 	keymaps = nil,
 }
 
@@ -66,8 +66,8 @@ function bufmode.setup(opts)
 	--- @type bufmode.options
 	opts = opts and vim.tbl_extend('keep', opts, DEFAULT_OPTS) or vim.deepcopy(DEFAULT_OPTS)
 
-	-- if a setup was run manually once before, don't let plugin override the user's settings
-	if opts.auto and prev_setup_auto == false then
+	-- if a setup was already run, don't automatically run it again.
+	if opts.auto and prev_setup_auto ~= nil then
 		return
 	end
 
@@ -109,28 +109,43 @@ function bufmode.setup(opts)
 		keymaps = vim.tbl_extend('force', keymaps, opts.keymaps)
 	end
 
-	local libmodal = require 'libmodal'
-	local function mode()
-		libmodal.mode.enter('BUFFERS', keymaps)
+	--- `true` if the current `enter_mapping` to set is the same as the default
+	local setup_default_enter_mapping = opts.enter_mapping == DEFAULT_OPTS.enter_mapping
+
+	if prev_setup_auto == true
+		and not setup_default_enter_mapping
+		and vim.fn.maparg(DEFAULT_OPTS.enter_mapping):match 'bufmode'
+	then
+		vim.api.nvim_del_keymap('n', DEFAULT_OPTS.enter_mapping)
 	end
 
-	--- The description used for mappings
+	--- the description for all keymaps
 	local DESC = 'Enter buffer mode'
 
-	if prev_setup_auto then
-		vim.keymap.del('n', DEFAULT_OPTS.enter_mapping)
+	--- enter the buffer mode
+	local function mode()
+		require('libmodal').mode.enter('BUFFERS', keymaps)
 	end
 
-	if opts.enter_mapping ~= false then
-		vim.keymap.set('n', opts.enter_mapping, mode, {desc = DESC})
+	-- setup `enter_mapping`, unless it was automatically setup and there's no override
+	if opts.enter_mapping ~= false and (
+		(opts.auto and vim.fn.maparg(opts.enter_mapping) == '')
+		or (not opts.auto and not setup_default_enter_mapping)
+	) then
+		vim.api.nvim_set_keymap('n', opts.enter_mapping, '', {callback = mode, desc = DESC})
 	end
 
-	vim.keymap.set('n', '<Plug>(BufmodeEnter)', mode, {desc = DESC})
-	vim.api.nvim_create_user_command('BufmodeEnter', mode, {desc = DESC})
+	--- The name of the user-command which enters the buffer mode.
+	local CMD_NAME = 'BufmodeEnter'
+
+	vim.api.nvim_create_user_command(CMD_NAME, mode, {desc = DESC})
+
+	-- first setup things
+	if prev_setup_auto == nil then
+		vim.api.nvim_set_keymap('n', '<Plug>(' .. CMD_NAME .. ')', '<Cmd>BufmodeEnter<CR>', {desc = DESC})
+	end
 
 	prev_setup_auto = opts.auto
 end
-
---[[/* PUBLICIZE MODULE */]]
 
 return bufmode
