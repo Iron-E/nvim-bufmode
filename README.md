@@ -16,14 +16,14 @@ Either use `packadd` or any package manager. I recommend using [lazy.nvim](https
 
 ```lua
 {'Iron-E/nvim-bufmode',
-  cmd = 'BufmodeEnter',
+  cmd = 'BufmodeEnter', -- don't load until using this command
   config = true, -- automatically call `bufmode.setup()`; not needed if you specify `opts`
   dependencies = {
     'Iron-E/nvim-libmodal',
     -- 'akinsho/bufferline.nvim', (optional)
     -- 'romgrk/barbar.nvim', (optional)
   },
-  keys = {{'<Leader>b', desc = 'Enter buffer mode', mode = 'n'}}, -- don't load
+  keys = {{'<Leader>b', desc = 'Enter buffer mode', mode = 'n'}}, -- don't load until pressing these keys
   -- opts = {}, (put `setup` options here, e.g. `opts = {enter_mapping = false}`
 },
 ```
