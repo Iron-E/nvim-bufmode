@@ -113,7 +113,6 @@ function bufmode.setup(opts)
 		and opts.enter_mapping ~= DEFAULT_OPTS.enter_mapping
 		and vim.fn.maparg(DEFAULT_OPTS.enter_mapping):match 'bufmode'
 	then
-		vim.pretty_print(opts.auto, 'del')
 		vim.api.nvim_del_keymap('n', DEFAULT_OPTS.enter_mapping)
 	end
 
