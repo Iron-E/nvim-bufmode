@@ -8,17 +8,21 @@
 
 # Installation
 
-Either use `packadd` or any package manager.
+Either use `packadd` or any package manager. I recommend using [lazy.nvim](https://github.com/folke/lazy.nvim).
 
 ## Examples
 
-I recommend using [lazy.nvim](https://github.com/folke/lazy.nvim). Here is what you can put into your `lazy.setup({…})`:
+`lazy.nvim`:
 
 ```lua
 {'Iron-E/nvim-bufmode',
   cmd = 'BufmodeEnter',
   config = true, -- automatically call `bufmode.setup()`; not needed if you specify `opts`
-  dependencies = 'Iron-E/nvim-libmodal',
+  dependencies = {
+    'Iron-E/nvim-libmodal',
+    -- 'akinsho/bufferline.nvim', (optional)
+    -- 'romgrk/barbar.nvim', (optional)
+  },
   keys = {{'<Leader>b', desc = 'Enter buffer mode', mode = 'n'}}, -- don't load
   -- opts = {}, (put `setup` options here, e.g. `opts = {enter_mapping = false}`
 },
@@ -53,7 +57,7 @@ let g:bufmode_mappings = {
 }
 ```
 ```lua
-require'bufmode'.setup {
+require('bufmode').setup {
   enter_mapping = '<leader>b', -- false to disable
   bufferline = false, -- add bufferline.nvim keymaps
   barbar = false, -- add barbar.nvim keymaps
@@ -70,7 +74,7 @@ require'bufmode'.setup {
 
 # Usage
 
-Enter `nvim-bufmode` with `<leader><Tab>` or `:BufmodeEnter`.
+Enter `nvim-bufmode` with `<Leader>b` or `:BufmodeEnter`.
 
 | Key                                                | Use                               |
 |:--------------------------------------------------:|:---------------------------------:|

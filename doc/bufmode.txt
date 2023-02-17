@@ -14,7 +14,7 @@ extensible, allowing additional functionality to be added (see
 
 1. Requirements ............ |bufmode-requirements|
 2. Usage ................... |bufmode-usage|
-3. Configuration ........... |bufmode-configuration|
+3. Setup ................... |bufmode-setup|
 
 ==============================================================================
 1. Requirements                                           *bufmode-requirements*
@@ -23,13 +23,14 @@ extensible, allowing additional functionality to be added (see
 	- https://github.com/Iron-E/nvim-libmodal
 - |barbar| (optional)
 	- https://github.com/romgrk/barbar.nvim
+- |bufferline| (optional)
+	- https://github.com/akinsho/bufferline.nvim
 
 ==============================================================================
 2. Usage                                                         *bufmode-usage*
 
-                                                                 *:BufmodeEnter*
-                                                          *<Plug>(BufmodeEnter)*
-Enter |bufmode| with <leader><Tab> or |:BufmodeEnter|.
+                                          *:BufmodeEnter* *<Plug>(BufmodeEnter)*
+Enter |bufmode| with <Leader>b or |:BufmodeEnter|.
 
 Key                                       Use
 ----------------------------------------  -----------------------------------
@@ -47,28 +48,56 @@ Key                                       Use
 `r`                                         Replace current buffer with new.
 
 ==============================================================================
-3. Configuration                                         *bufmode-configuration*
+3. Setup                                                         *bufmode-setup*
 
-------------------------------------------------------------------------------
-DEFAULTS                                                      *bufmode-defaults*
-
-By default, |bufmode| is started with <leader><Tab> or |:BufmodeEnter|. If
-any mapping for |<Plug>(BufmodeEnter)| is detected, this default will not
-load. >
-	map <leader><Tab> <Plug>(BufmodeEnter)
+|bufmode| supports overriding its default settings by using a `setup`
+function. To call this function, simply put the following in a |lua| file: >
+	require('bufmode').setup {
+		first_option = 'first value',
+		second_option = 'second value',
+		-- …
+	}
 <
 
-------------------------------------------------------------------------------
-MAPPINGS                                                      *bufmode-mappings*
+The following section contains the options which may be passed to this
+function.
+
+Options~
+
+`boolean`                  (default `false`)                  *bufmode-setup-barbar*
+This setting enables additional with the |barbar| plugin. If `true`, certain
+|key-mapping|s are overwritten, and others are added.
+
+You can pass this setting to the |bufmode-setup| function like so: >
+	require('bufmode').setup {barbar = true}
+<
+
+`boolean`                (default `false`)                *bufmode-setup-bufferline*
+This setting enables additional with the |bufferline| plugin. If `true`,
+certain |key-mapping|s are overwritten, and others are added.
+
+You can pass this setting to the |bufmode-setup| function like so: >
+	require('bufmode').setup {bufferline = true}
+<
+
+`false|string`          (default "<leader>b")        *bufmode-setup-enter_mapping*
+The setting controls what |key-mapping| is used to enter |bufmode|.
+
+You can pass this setting to the |bufmode-setup| function like so: >
+	require('bufmode').setup {enter_mapping = '<leader>b'}
+<
+
+`table<string, fun()|string>`       (default `{}`)           *bufmode-setup-keymaps*
                                                             *g:bufmode_mappings*
+This setting allows you to add or overwrite |key-mapping|s in the |bufmode|.
 
-One may |tbl_extend| the mappings from |:BufmodeEnter| by providing a global map
-of desired mappings: >
-	vim.g.bufmode_mappings = {}
+You can pass this setting to the |bufmode-setup| function like so: >
+	require('bufmode').setup {keymaps = {x = 'silent! bdelete'}}
 <
 
-	*Error	if |g:bufmode_mappings| has any mapping from |:BufmodeEnter|.
-	      	e.g. `vim.g.bufmode_mappings = {b = 'some_command'}`
+Or you can express this setting using a |global-variable|: >
+	vim.g.bufmode_mappings = {x = 'silent! bdelete'}
+<
 
 ==============================================================================
- vim:tw=78:ts=4:ft=help:norl:
+ vim:tw=78:ft=help:norl:
