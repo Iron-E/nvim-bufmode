@@ -109,13 +109,11 @@ function bufmode.setup(opts)
 		keymaps = vim.tbl_extend('force', keymaps, opts.keymaps)
 	end
 
-	--- `true` if the current `enter_mapping` to set is the same as the default
-	local setup_default_enter_mapping = opts.enter_mapping == DEFAULT_OPTS.enter_mapping
-
 	if prev_setup_auto == true
-		and not setup_default_enter_mapping
+		and opts.enter_mapping ~= DEFAULT_OPTS.enter_mapping
 		and vim.fn.maparg(DEFAULT_OPTS.enter_mapping):match 'bufmode'
 	then
+		vim.pretty_print(opts.auto, 'del')
 		vim.api.nvim_del_keymap('n', DEFAULT_OPTS.enter_mapping)
 	end
 
@@ -130,7 +128,7 @@ function bufmode.setup(opts)
 	-- setup `enter_mapping`, unless it was automatically setup and there's no override
 	if opts.enter_mapping ~= false and (
 		(opts.auto and vim.fn.maparg(opts.enter_mapping) == '')
-		or (not opts.auto and not setup_default_enter_mapping)
+		or (not opts.auto and not vim.deep_equal(opts, DEFAULT_OPTS))
 	) then
 		vim.api.nvim_set_keymap('n', opts.enter_mapping, '', {callback = mode, desc = DESC})
 	end
