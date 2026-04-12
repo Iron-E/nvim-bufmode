@@ -25,6 +25,12 @@ local MODE_KEYMAPS =
 		['w'] = 'BufferLineCycleNext',
 	},
 
+	--- mini.bufremove integration
+	BUFREMOVE =
+	{
+		['d'] = 'lua require("mini.bufremove").delete()',
+	},
+
 	--- the default mode mappings
 	DEFAULT =
 	{
@@ -47,6 +53,7 @@ local prev_setup_auto
 --- @field auto boolean whether the `setup` call was performed by the `plugin/bufmode.lua` file
 --- @field barbar boolean Whether to add bindings for barbar.nvim
 --- @field bufferline boolean Whether to add bindings for bufferline.nvim
+--- @field bufremove boolean Whether to add bindings for bufferline.nvim
 --- @field enter_mapping false|string custom binding to enter buffers mode
 --- @field keymaps? {[string]: fun()|string} custom key bindings to apply
 local DEFAULT_OPTS =
@@ -78,6 +85,8 @@ function bufmode.setup(opts)
 		keymaps = vim.tbl_extend('force', keymaps, MODE_KEYMAPS.BARBAR)
 	elseif opts.bufferline then -- Add mappings for `bufferline.nvim`
 		keymaps = vim.tbl_extend('force', keymaps, MODE_KEYMAPS.BUFFERLINE)
+	elseif opts.bufremove then -- Add mappings for `bufferline.nvim`
+		keymaps = vim.tbl_extend('force', keymaps, MODE_KEYMAPS.BUFREMOVE)
 	end
 
 	--- create a link to some existing mapping
